@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	//"sync"
 )
 
 const conferenceName = "Go Conference"
@@ -28,8 +29,11 @@ func main() {
 		isValidName, isValidEmail, isValidTicketNumber := ValidateUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
+
 			bookTicket(userTickets, firstName, lastName, email)
+			//wg.Add(1)
 			go sendTicket(userTickets, firstName, lastName, email)
+
 			// call function print first names
 			firstNames := getFirstNames()
 			fmt.Printf("First names: %v\n", firstNames)
@@ -51,7 +55,12 @@ func main() {
 			}
 		}
 	}
+	//wg.Wait()
 }
+
+//var wg = sync.WaitGroup() {
+
+//}
 
 func greetUsers() {
 	fmt.Printf("Welcome to %v booking application!. We are selling %v tickets.\n", conferenceName, conferenceTickets)
@@ -115,4 +124,5 @@ func sendTicket(userTickets uint, firstName string, lastName string, email strin
 	time.Sleep(3 * time.Second)
 	fmt.Printf("Sending ticket:\n %v \nto email %v\n", ticket, email)
 	fmt.Println("------------")
+	//wg.Done()
 }
